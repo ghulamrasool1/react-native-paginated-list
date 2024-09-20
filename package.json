@@ -1,0 +1,29 @@
+{
+  "name": "react-native-paginated-list",
+  "version": "1.0.0",
+  "description": "A reusable paginated list component for React Native that handles infinite scrolling, API data fetching, and rendering components generically in a List",
+  "main": "src/PaginatedList.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghulamrasool1/react-native-paginated-list.git"
+  },
+  "keywords": [
+    "paginated",
+    "list",
+    "infinite",
+    "scrolling"
+  ],
+  "author": "Ghulam Rasool",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ghulamrasool1/react-native-paginated-list/issues"
+  },
+  "homepage": "https://github.com/ghulamrasool1/react-native-paginated-list#readme",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "react-query": "^3.39.3"
+  }
+}
