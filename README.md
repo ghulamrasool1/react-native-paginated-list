@@ -1,8 +1,8 @@
 # react-native-paginated-list
 
-A reusable paginated list component for React Native that handles infinite scrolling, API data fetching, and renders components generically in a list.
+Renders a list of any custom component with populated data, seamlessly managing pagination and infinite scrolling. Simply provide your API endpoint and card component, and let the component handle fetching, loading more data as you scroll, displaying items in customizable layouts, and showing a message when no results are found.
 
-You can pass a custom card component to render the list items, the API endpoint to fetch data from, the number of items per page, and a few other props, and this component will handle the following:
+Once you provide the API endpoint, card component (e.g., product card, notification item card, user profile card), number of items per page, and a few other props, the component will:
 
 - Fetching data from the specified API endpoint.
 - Managing pagination.
