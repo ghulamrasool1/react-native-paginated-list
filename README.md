@@ -1,8 +1,10 @@
 # react-native-paginated-list
 
-Renders a list of any custom component with populated data, seamlessly managing pagination and infinite scrolling. Simply provide your API endpoint and card component, and let the component handle fetching, loading more data as you scroll, displaying items in customizable layouts, and showing a message when no results are found.
+This component renders a list of any custom UI component with populated data and manages pagination and infinite scrolling. Simply provide your API endpoint and card component, and react-native-paginated-list handles data fetching, loading more as you scroll, customizable layouts, and displaying a message when no results are found.
+  
+It adheres to Separation of Concerns by keeping UI design separate from data logic, follows DRY (Don't Repeat Yourself) by centralizing pagination logic and making it reusable, and applies the Single Responsibility Principle (SRP), focusing solely on pagination and data fetching for easier maintenance and extension.
 
-Once you provide the API endpoint, card component (e.g., product card, notification item card, user profile card), number of items per page, and a few other props, the component will:
+Provide the API endpoint, card UI component (e.g., product card, notification card, profile card), number of items per page, and a few other props, and the component will:
 
 - Fetching data from the specified API endpoint.
 - Managing pagination.
@@ -15,7 +17,7 @@ Once you provide the API endpoint, card component (e.g., product card, notificat
 
 - **API Data Fetching**: Fetch data from a given API endpoint using pagination.
 - **Infinite Scrolling**: Automatically fetch more data when the user scrolls near the bottom of the list.
-- **Custom Rendering**: Pass a custom card component to render each item in the list.
+- **Custom Rendering**: Pass a custom UI card component to render each item in the list.
 - **Multiple Columns**: Display the list items in a customizable number of columns.
 - **Error and Empty State Handling**: Show messages when there is an error or when no data is available.
 ## Installation
@@ -27,7 +29,48 @@ npm install react-native-paginated-list
 ``` 
  
 ## Usage
-Here’s a simple example of how to use the `PaginatedList` component:
+Here’s a simple 3 step example of how to use the `PaginatedList` component:
+
+1. First, you need to design a UI component that represents each item in your list. For example, if you are displaying products from an API, your component might show the product name and price.
+Here’s a simple example of a ProductCard component that displays the product’s name and price:
+ 
+```jsx
+const ProductCard = ({ item }) => (
+  <Text>{item.name}</Text>   <Text>{item.price}</Text>
+);
+```
+
+2. Your API endpoint should return data in a format like this, where the data array contains a list of products:
+ 
+```json
+    {
+        "data": [
+            { 
+                "id": 1, 
+                "name": "Product 1" , 
+                "price" :10  
+            }, 
+            { 
+                "id": 2, 
+                "name": "Product 2" , 
+                "price" : 15  
+            }
+        ],
+        "meta": {
+            "pagination": {
+                "page": 1,
+                "pageCount": 1
+            }
+        }
+    };
+ ```   
+- `data` : The array of items that will be displayed in the list. 
+- `meta.pagination.page` : The current page number, used to determine the next page to fetch. 
+- `meta.pagination.pageCount` : The total number of pages, used to determine when to stop fetching additional data.
+
+**Important Note"** react-native-paginated-list expects the backend to return data in the specified format, particularly the meta section. This section is crucial as it provides the pagination details used by the component to calculate the next page for infinite scrolling.
+
+3. Use PaginatedList and pass the props (details below)
 
 ```jsx
 import React from 'react';
@@ -48,24 +91,6 @@ const ProductsScreen = () => (
 
 export default ProductsScreen;
 ```
-
-The backend response must follow this format:
-
-```json
-{
-  "data": [],  
-  "meta": {
-    "pagination": {
-      "page": 1,             
-      "pageCount": 10        
-    }
-  }
-}
-
-```
-- `data` : The array of items that will be displayed in the list. 
-- `meta.pagination.page` : The current page number, used to determine the next page to fetch. 
-- `meta.pagination.pageCount` : The total number of pages, used to determine when to stop fetching additional data.
 
 ## Props 
 
