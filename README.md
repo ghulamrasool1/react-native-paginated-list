@@ -36,7 +36,8 @@ Hereâ€™s a simple example of a ProductCard component that displays the productâ€
  
 ```jsx
 const ProductCard = ({ item }) => (
-  <Text>{item.name}</Text>   <Text>{item.price}</Text>
+  <Text>{item.name}</Text>   
+  <Text>{item.price}</Text>
 );
 ```
 
@@ -69,6 +70,7 @@ const ProductCard = ({ item }) => (
 - `meta.pagination.pageCount` : The total number of pages, used to determine when to stop fetching additional data.
 
 **Important Note"** react-native-paginated-list expects the backend to return data in the specified format, particularly the meta section. This section is crucial as it provides the pagination details used by the component to calculate the next page for infinite scrolling.
+- It is also important to have a unique `id` as part of the item being fetched from backend,
 
 3. Use PaginatedList and pass the props (details below)
 
@@ -106,5 +108,11 @@ export default ProductsScreen;
 | `emptyMessageEntity`  | `string`          | `'Items'`   | The entity name to use in the "No X found" message. |
 | `axiosInstance`       | `object`          | `defaultAxios` | Optional custom Axios instance for API calls. |
 
+## Roadmap 
 
+- Pull to refresh functionality. 
+- More customizable styling of empty message and error message.  
+- More battle testing. 
+- Probably Horizontal/Vertical scrolling prop? 
+- Other ideas are welcome. 
 
