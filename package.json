@@ -1,6 +1,6 @@
 {
   "name": "react-native-paginated-list",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A reusable paginated list component for React Native that handles infinite scrolling, API data fetching, and rendering components generically in a List",
   "main": "src/PaginatedList.js",
   "scripts": {
