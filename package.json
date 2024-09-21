@@ -4,7 +4,7 @@
   "description": "A reusable paginated list component for React Native that handles infinite scrolling, API data fetching, and rendering components generically in a List",
   "main": "src/PaginatedList.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -24,12 +24,23 @@
   "homepage": "https://github.com/ghulamrasool1/react-native-paginated-list#readme",
   "dependencies": {
     "axios": "^1.7.7",
+    "react": "^18.3.1",
+    "react-native": "^0.75.3",
     "react-query": "^3.39.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/plugin-transform-class-properties": "^7.25.4",
+    "@babel/plugin-transform-private-methods": "^7.25.4",
+    "@babel/plugin-transform-private-property-in-object": "^7.24.7",
+    "@babel/preset-env": "^7.25.4",
+    "@babel/runtime": "^7.25.6",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.7.2",
     "axios-mock-adapter": "^2.0.0",
-    "jest": "^29.7.0"
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "metro-react-native-babel-preset": "^0.77.0",
+    "react-test-renderer": "^18.3.1"
   }
 }

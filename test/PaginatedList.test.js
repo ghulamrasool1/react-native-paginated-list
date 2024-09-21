@@ -1,101 +1,108 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react-native';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import PaginatedList from '../src/PaginatedList';  // Adjust this path to your PaginatedList location
+import { QueryClient, QueryClientProvider } from 'react-query';
+import PaginatedList from '../src/PaginatedList';
+import { Text } from 'react-native'; 
 
-// Simple mock card component for testing
-const ProductCard = ({ item }) => (
-  <Text>{item.name}</Text>
-);
+jest.mock('axios', () => ({
+  get: jest.fn(),
+}));
 
-const mock = new MockAdapter(axios);
-
-describe('PaginatedList Component', () => {
-
-  // Test for rendering the component
-  it('renders correctly with provided props', () => {
-    const { getByTestId } = render(
-      <PaginatedList
-        CardComponent={ProductCard}
-        endpoint="https://api.example.com/products"
-        collectionPath="products"
-        itemsPerPage={30}
-        columns={2}
-      />
-    );
-
-    expect(getByTestId('paginated-list')).toBeTruthy();
-  });
-
-  // Test for fetching data from the API
-  it('fetches data and renders items correctly', async () => {
-    mock.onGet('https://api.example.com/products').reply(200, {
-      data: [{ id: 1, name: 'Product 1' }, { id: 2, name: 'Product 2' }],
-      meta: {
-        pagination: {
-          page: 1,
-          pageCount: 1
-        }
-      }
+const createTestQueryClient = () => {
+    return new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: false,  // Disable retries for tests 
+                cacheTime: 0, // Clear cache   
+            },
+        },
     });
+};
+
+const createWrapper = () => {
+    const queryClient = createTestQueryClient();
+    return ({ children }) => (
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    );
+};
+
+describe('PaginatedList', () => {
+  const mockCardComponent = ({ item }) => 
+    <Text>{item.name}</Text>;
+  
+  const mockEndpoint = 'https://api.myverycool.app/items';
+   
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  
+  test('renders items when data is fetched successfully', async () => {
+    const mockData = {
+      data: {
+        data: [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }],
+        meta: { pagination: { page: 1, pageCount: 1 } },
+      },
+    };
+
+    require('axios').get.mockResolvedValueOnce(mockData);
 
     const { getByText } = render(
       <PaginatedList
-        CardComponent={ProductCard}
-        endpoint="https://api.example.com/products"
-        collectionPath="data"
-        itemsPerPage={30}
-        columns={2}
-      />
+        CardComponent={mockCardComponent}
+        endpoint={mockEndpoint}
+      />,
+      { wrapper: createWrapper() }
     );
 
     await waitFor(() => {
-      expect(getByText('Product 1')).toBeTruthy();
-      expect(getByText('Product 2')).toBeTruthy();
+      expect(getByText('Item 1')).toBeTruthy();
+      expect(getByText('Item 2')).toBeTruthy();
     });
   });
-
-  // Test for handling empty data
-  it('displays empty message when no data is found', async () => {
-    mock.onGet('https://api.example.com/products').reply(200, {
-      data: [],
-      meta: {
-        pagination: {
-          page: 1,
-          pageCount: 1
-        }
-      }
-    });
-
+ 
+  test('renders empty message when no items are found', async () => {
+    const mockEmptyData = {
+      data: {
+        data: [],
+        meta: { pagination: { page: 1, pageCount: 0 } },
+      },
+    };
+ 
+    require('axios').get.mockResolvedValueOnce(mockEmptyData);
+  
     const { getByText } = render(
       <PaginatedList
-        CardComponent={ProductCard}
-        endpoint="https://api.example.com/products"
-        collectionPath="data"
-        emptyMessageEntity="Products"
-      />
+        CardComponent={mockCardComponent}
+        endpoint={mockEndpoint}
+        emptyMessageEntity="products"
+      />,
+      { wrapper: createWrapper() }
     );
 
     await waitFor(() => {
-      expect(getByText('No Products found')).toBeTruthy();
+      expect(getByText('No products found.')).toBeTruthy();
     });
-  });
+  }); 
 
-  // Test for handling API errors
-  it('displays error message on API failure', async () => {
-    mock.onGet('https://api.example.com/products').reply(500);
-
+  test('displays error message when API call fails', async () => {
+    const mockError = new Error('Failed to fetch data');
+    mockError.response = { status: 500 }; // Simulate server error
+  
+    // Mock Axios to throw an error
+    require('axios').get.mockImplementationOnce(() => Promise.reject(mockError));
     const { getByText } = render(
-      <PaginatedList
-        CardComponent={ProductCard}
-        endpoint="https://api.example.com/products"
-        collectionPath="data"
-      />
-    );
+        <PaginatedList
+          CardComponent={mockCardComponent}
+          endpoint={mockEndpoint}
+          refetchKey={3} // Unique key
+        />,
+        { wrapper: createWrapper() }
+      );
 
+    // Wait for the error message to appear
     await waitFor(() => {
-      expect(getByText(/Error/)).toBeTruthy(); // Adjust this based on the actual error message
+      expect(getByText('Error: Failed to fetch data')).toBeTruthy();
     });
   });
+ 
 });
