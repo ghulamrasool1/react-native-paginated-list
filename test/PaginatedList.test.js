@@ -29,7 +29,7 @@ const createWrapper = () => {
 describe('PaginatedList', () => {
   const mockCardComponent = ({ item }) => 
     <Text>{item.name}</Text>;
-  
+
   const mockEndpoint = 'https://api.myverycool.app/items';
    
   beforeEach(() => {

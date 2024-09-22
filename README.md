@@ -72,23 +72,30 @@ const ProductCard = ({ item }) => (
 **Important Note"** react-native-paginated-list expects the backend to return data in the specified format, particularly the meta section. This section is crucial as it provides the pagination details used by the component to calculate the next page for infinite scrolling.
 - It is also important to have a unique `id` as part of the item being fetched from backend,
 
-3. Use PaginatedList and pass the props (details below)
+3. Use PaginatedList and pass the props (details below), wrapping it in a QueryClientProvider (required by react-query, which is used by the PaginatedList component)
 
 ```jsx
 import React from 'react';
-import PaginatedList from 'react-native-paginated-list';
+import { PaginatedList } from 'react-native-paginated-list';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import ProductCard from './components/ProductCard';
 
+// Create a QueryClient instance
+const queryClient = new QueryClient();
+
 const ProductsScreen = () => (
-  <PaginatedList
-    CardComponent={ProductCard}
-    endpoint="https://api.example.com/products"
-    collectionPath="products"
-    emptyMessageEntity="Products"
-    loaderColor="blue"
-    itemsPerPage={30}
-    columns={2}
-  />
+  // Wrap your component tree with QueryClientProvider
+  <QueryClientProvider client={queryClient}>
+    <PaginatedList
+      CardComponent={ProductCard}
+      endpoint="https://api.example.com/products"
+      collectionPath="products"
+      emptyMessageEntity="Products"
+      loaderColor="blue"
+      itemsPerPage={30}
+      columns={2}
+    />
+  </QueryClientProvider>
 );
 
 export default ProductsScreen;
