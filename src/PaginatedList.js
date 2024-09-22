@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { FlatList, ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 import defaultAxios from 'axios';
 import { useInfiniteQuery } from 'react-query';
-
+    
 const PaginatedList = ({
     CardComponent,
     endpoint,
@@ -38,6 +38,7 @@ const PaginatedList = ({
         isLoading,
         isError,
         error,
+        remove, 
     } = useInfiniteQuery(
         ['items', endpoint, refetchKey],
         fetchItems,
@@ -50,9 +51,14 @@ const PaginatedList = ({
                 pages: data.pages.flatMap((page) => page.data),
             }), []),
         }
-    );
+    ); 
     const itemList = data?.pages || [];
-
+    React.useEffect(() => {
+        return () => {
+          remove();   
+        };
+      }, [remove]);
+      
     const renderItem = useCallback(({ item }) => (
         <CardComponent item={item} />
     ), [CardComponent]);
