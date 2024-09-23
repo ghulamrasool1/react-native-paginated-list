@@ -1,17 +1,17 @@
 # react-native-paginated-list
 
-This component renders a list of any custom UI component with populated data and manages pagination and infinite scrolling. Simply provide your API endpoint and card component, and react-native-paginated-list handles data fetching, loading more as you scroll, customizable layouts, and displaying a message when no results are found.
+This component renders a list of any custom UI component with data fetched from an API, efficiently managing pagination and infinite scrolling. Just provide your API endpoint and card component, and `react-native-paginated-list` takes care of data fetching, loading additional content as you scroll, customizable layouts, and displaying messages when no results are found.
   
-It adheres to Separation of Concerns by keeping UI design separate from data logic, follows DRY (Don't Repeat Yourself) by centralizing pagination logic and making it reusable, and applies the Single Responsibility Principle (SRP), focusing solely on pagination and data fetching for easier maintenance and extension.
+The library centralizes pagination logic and is designed to be reusable across different scenarios, reducing repetitive code (following DRY—Don’t Repeat Yourself). It also adheres to the Single Responsibility Principle (SRP), focusing exclusively on handling pagination and data fetching, which simplifies both maintenance and extensibility.
 
-Provide the API endpoint, card UI component (e.g., product card, notification card, profile card), number of items per page, and a few other props, and the component will:
+You provide the API endpoint, the card UI component (e.g., product card, notification card, profile card), the number of items per page, and a few other props, and the component will:
 
-- Fetching data from the specified API endpoint.
-- Managing pagination.
-- Handling infinite scrolling (i.e., fetching more data as the user scrolls near the end of the current page).
-- Rendering the custom card component in a `FlatList`.
-- Displaying the list in `n` number of columns, where `n` is passed as a prop.
-- Displaying a customizable message if no results are found or if an error occurs.
+- Fetch data from the provided API endpoint.
+- Manage pagination efficiently.
+- Handle infinite scrolling (automatically fetching more data when the user scrolls near the end of the list).
+- Render the custom card component using a FlatList.
+- Display the list in a customizable number of columns.
+- Show a customizable message when no results are found or when an error occurs.
 
 ## Features
 
@@ -117,6 +117,8 @@ export default ProductsScreen;
 
 ## Roadmap 
 
+- Make the pagination params flexible 
+- Add querying filter params 
 - Pull to refresh functionality. 
 - More customizable styling of empty message and error message.  
 - More battle testing. 
