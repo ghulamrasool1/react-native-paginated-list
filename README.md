@@ -82,18 +82,20 @@ import ProductCard from './components/ProductCard';
 
 // Create a QueryClient instance
 const queryClient = new QueryClient();
-
+  
 const ProductsScreen = () => (
   // Wrap your component tree with QueryClientProvider
   <QueryClientProvider client={queryClient}>
     <PaginatedList
       CardComponent={ProductCard}
       endpoint="https://api.example.com/products"
+      itemsPerPage  
       collectionPath="products"
-      emptyMessageEntity="Products"
-      loaderColor="blue"
-      itemsPerPage={30}
+      refetchKey
       columns={2}
+      emptyMessageEntity = 'items' 
+      axiosInstance
+      loaderColor="lightgrey"
     />
   </QueryClientProvider>
 );
