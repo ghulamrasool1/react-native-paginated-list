@@ -63,8 +63,8 @@ const ProductCard = ({ item }) => (
                 "pageCount": 1
             }
         }
-    };
- ```   
+    } 
+ ```    
 - `data` : The array of items that will be displayed in the list. 
 - `meta.pagination.page` : The current page number, used to determine the next page to fetch. 
 - `meta.pagination.pageCount` : The total number of pages, used to determine when to stop fetching additional data.
